@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kenetik Brain Score: Stroop Test</title>
     <link href="https://fonts.googleapis.com/css2?family=Rokkitt:wght@300;500;800&display=swap" rel="stylesheet">
+    <!-- Klaviyo Tracking - Replace YOUR_KLAVIYO_PUBLIC_KEY with actual key -->
+    <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=YOUR_KLAVIYO_PUBLIC_KEY"></script>
     <style>
         /* Kenetik Brain Score - Stroop Test */
         /* Brand: White background, black text, Avenir body, museo-slab headings */
@@ -730,9 +732,142 @@
           text-align: left;
         }
 
+        /* Kenetik Retest Countdown Timer */
+        .brain-score__countdown-timer {
+          background: linear-gradient(135deg, rgba(232,75,99,0.06) 0%, rgba(244,179,65,0.06) 100%);
+          border: 1px solid rgba(232,75,99,0.15);
+          border-radius: 12px;
+          padding: 32px;
+          margin-bottom: 32px;
+          text-align: center;
+        }
+
+        .brain-score__countdown-timer-title {
+          font-family: "Rokkitt", serif;
+          font-size: 22px;
+          font-weight: 500;
+          color: #000000;
+          margin-bottom: 8px;
+        }
+
+        .brain-score__countdown-timer-subtitle {
+          font-size: 15px;
+          color: #555555;
+          line-height: 1.5;
+          margin-bottom: 24px;
+        }
+
+        .brain-score__countdown-timer-display {
+          font-family: "Rokkitt", serif;
+          font-size: 64px;
+          font-weight: 300;
+          background: linear-gradient(90deg, #E84B63 0%, #F4B341 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          margin-bottom: 16px;
+          line-height: 1;
+          display: none;
+        }
+
+        .brain-score__countdown-timer-progress {
+          height: 4px;
+          background: #eeeeee;
+          border-radius: 2px;
+          overflow: hidden;
+          margin-bottom: 16px;
+          display: none;
+        }
+
+        .brain-score__countdown-timer-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #E84B63 0%, #F4B341 100%);
+          border-radius: 2px;
+          transition: width 1s linear;
+        }
+
+        .brain-score__countdown-timer-status {
+          font-size: 13px;
+          color: #999999;
+          display: none;
+        }
+
+        .brain-score__countdown-timer .brain-score__btn {
+          margin-top: 16px;
+        }
+
+        .brain-score__countdown-timer--active .brain-score__countdown-timer-display,
+        .brain-score__countdown-timer--active .brain-score__countdown-timer-progress,
+        .brain-score__countdown-timer--active .brain-score__countdown-timer-status {
+          display: block;
+        }
+
+        .brain-score__countdown-timer--complete .brain-score__countdown-timer-title {
+          background: linear-gradient(90deg, #E84B63, #F4B341);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .brain-score__test-type-badge {
+          display: inline-block;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          padding: 4px 12px;
+          border-radius: 100px;
+          margin-bottom: 8px;
+        }
+
+        .brain-score__test-type-badge--baseline {
+          background: #f0f0f0;
+          color: #999999;
+        }
+
+        .brain-score__test-type-badge--retest {
+          background: linear-gradient(90deg, rgba(232,75,99,0.1), rgba(244,179,65,0.1));
+          color: #E84B63;
+        }
+
+        .brain-score__comparison {
+          background: #f7f7f7;
+          border-radius: 12px;
+          padding: 24px 32px;
+          margin-bottom: 32px;
+          text-align: center;
+          display: none;
+        }
+
+        .brain-score__comparison-title {
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: #999999;
+          margin-bottom: 16px;
+        }
+
+        .brain-score__comparison-change {
+          font-family: "Rokkitt", serif;
+          font-size: 36px;
+          font-weight: 500;
+          margin-bottom: 8px;
+        }
+
+        .brain-score__comparison-change--positive { color: #2d9d4e; }
+        .brain-score__comparison-change--negative { color: #E84B63; }
+        .brain-score__comparison-change--neutral { color: #999999; }
+
+        .brain-score__comparison-detail {
+          font-size: 14px;
+          color: #555555;
+        }
+
         @media (max-width: 767px) {
           .brain-score { padding: 40px 0; }
           .brain-score__title { font-size: 32px; }
+          .brain-score__countdown-timer-display { font-size: 48px; }
           .brain-score__stimulus-word { font-size: 48px; }
           .brain-score__responses { gap: 8px; }
           .brain-score__response-btn { padding: 12px 20px; font-size: 13px; min-width: 80px; }
@@ -865,6 +1000,7 @@
         <!-- SCREEN 4: Results -->
         <div class="brain-score__screen" id="bs-results">
           <div class="brain-score__results">
+            <div class="brain-score__test-type-badge brain-score__test-type-badge--baseline" id="bs-test-type-badge">Baseline</div>
             <div class="brain-score__eyebrow">Your Brain Score</div>
 
             <div class="brain-score__score-display">
@@ -936,12 +1072,32 @@
               <a class="brain-score__science-fact-link" href="https://drinkkenetik.com/pages/science" id="bs-science-link">Explore the research</a>
             </div>
 
+            <!-- Before/After Comparison (shown on retest) -->
+            <div class="brain-score__comparison" id="bs-comparison">
+              <div class="brain-score__comparison-title">Before vs After Kenetik</div>
+              <div class="brain-score__comparison-change" id="bs-comparison-change">--</div>
+              <div class="brain-score__comparison-detail" id="bs-comparison-detail"></div>
+            </div>
+
             <div class="brain-score__retest-opt-in" id="bs-retest-section" style="display: none;">
               <p class="brain-score__retest-text">Cognitive performance fluctuates throughout the day and across weeks. Track your Brain Score over time to see how your focus and processing speed respond to changes in your routine.</p>
             </div>
 
+            <!-- Kenetik Retest Countdown Timer -->
+            <div class="brain-score__countdown-timer" id="bs-countdown-timer">
+              <div class="brain-score__countdown-timer-title" id="bs-timer-title">Ready to see Kenetik in action?</div>
+              <div class="brain-score__countdown-timer-subtitle" id="bs-timer-subtitle">Drink a Kenetik, then retest in 30 minutes to compare your baseline.</div>
+              <div class="brain-score__countdown-timer-display" id="bs-timer-display">30:00</div>
+              <div class="brain-score__countdown-timer-progress">
+                <div class="brain-score__countdown-timer-fill" id="bs-timer-fill" style="width: 100%"></div>
+              </div>
+              <div class="brain-score__countdown-timer-status" id="bs-timer-status">We'll also send you a reminder via email</div>
+              <button class="brain-score__btn" id="bs-start-countdown" type="button"><span>Start 30-Min Countdown</span></button>
+              <button class="brain-score__btn" id="bs-retest-now" type="button" style="display: none;"><span>Retest Now</span></button>
+            </div>
+
             <div class="brain-score__results-actions">
-              <button class="brain-score__btn" id="bs-retest" type="button"><span>Take It Again</span></button>
+              <button class="brain-score__btn brain-score__btn--secondary" id="bs-retest" type="button"><span>Take It Again</span></button>
               <a class="brain-score__btn brain-score__btn--secondary" href="https://drinkkenetik.com/collections/all" id="bs-shop"><span>Explore Kenetik</span></a>
             </div>
           </div>
@@ -952,9 +1108,12 @@
 
     <script>
         // Kenetik Brain Score - Stroop Test
-        // Standalone version with no Shopify or Klaviyo dependencies
+        // With Klaviyo integration and retest countdown timer
 
         (function() {
+          // Klaviyo helper
+          var _learnq = window._learnq || [];
+
           const brainScore = {
             state: {
               leadData: { name: '', email: '', phone: '', use_case: '' },
@@ -963,7 +1122,11 @@
               responses: [],
               startTime: null,
               testActive: false,
-              history: []
+              history: [],
+              testType: 'baseline',  // 'baseline' or 'retest'
+              baselineScore: null,
+              countdownInterval: null,
+              countdownSeconds: 1800  // 30 minutes
             },
 
             colorMap: {
@@ -1012,8 +1175,13 @@
                 });
               });
 
+              var countdownStartBtn = document.getElementById('bs-start-countdown');
+              var retestNowBtn = document.getElementById('bs-retest-now');
+
               startBtn.addEventListener('click', () => this.startTest());
               retestBtn.addEventListener('click', () => this.resetAndRestart());
+              countdownStartBtn.addEventListener('click', () => this.startCountdownTimer());
+              retestNowBtn.addEventListener('click', () => this.startRetest());
 
               responseButtons.forEach(btn => {
                 btn.addEventListener('click', (e) => this.handleResponse(e.target.dataset.color));
@@ -1037,12 +1205,17 @@
               this.state.leadData.email = document.getElementById('bs-email').value.trim();
               this.state.leadData.phone = document.getElementById('bs-phone').value.trim();
 
-              console.log('[Klaviyo would send] Identified user with:', {
-                name: this.state.leadData.name,
-                email: this.state.leadData.email,
-                phone: this.state.leadData.phone,
-                use_case: this.state.leadData.use_case
-              });
+              // Klaviyo: Identify user
+              var identifyData = {
+                '$email': this.state.leadData.email,
+                '$first_name': this.state.leadData.name,
+                'brain_score_use_case': this.state.leadData.use_case
+              };
+              if (this.state.leadData.phone) {
+                identifyData['$phone_number'] = this.state.leadData.phone;
+              }
+              _learnq.push(['identify', identifyData]);
+              console.log('[Klaviyo] Identified:', identifyData);
 
               this.switchScreen('bs-countdown');
               this.startCountdown();
@@ -1216,6 +1389,16 @@
             displayResults: function() {
               const results = this.state.results;
 
+              // Update test type badge
+              var badge = document.getElementById('bs-test-type-badge');
+              if (this.state.testType === 'retest') {
+                badge.textContent = 'After Kenetik';
+                badge.className = 'brain-score__test-type-badge brain-score__test-type-badge--retest';
+              } else {
+                badge.textContent = 'Baseline';
+                badge.className = 'brain-score__test-type-badge brain-score__test-type-badge--baseline';
+              }
+
               document.getElementById('bs-score').textContent = results.brainScore;
               document.getElementById('bs-accuracy').textContent = results.accuracy + '%';
               document.getElementById('bs-avg-time').textContent = results.avgTime + 'ms';
@@ -1232,15 +1415,45 @@
               this.displayScienceFact();
               this.displayHistory();
 
-              console.log('[Klaviyo would send] Brain Score results:', {
-                name: this.state.leadData.name,
-                email: this.state.leadData.email,
-                use_case: this.state.leadData.use_case,
-                brainScore: results.brainScore,
+              // Klaviyo: Track Brain Score Completed
+              var eventData = {
+                test_name: 'stroop',
+                test_type: this.state.testType,
+                brain_score: results.brainScore,
                 accuracy: results.accuracy,
-                avgSpeed: results.avgTime,
-                stroopEffect: results.stroopEffect
-              });
+                avg_speed: results.avgTime,
+                stroop_effect: results.stroopEffect,
+                congruent_speed: results.congruentSpeed,
+                incongruent_speed: results.incongruentSpeed,
+                congruent_correct: results.congruentCorrect,
+                incongruent_correct: results.incongruentCorrect
+              };
+              if (this.state.testType === 'retest' && this.state.baselineScore !== null) {
+                eventData.baseline_score = this.state.baselineScore;
+                eventData.score_change = results.brainScore - this.state.baselineScore;
+              }
+              _learnq.push(['track', 'Brain Score Completed', eventData]);
+              console.log('[Klaviyo] Tracked Brain Score Completed:', eventData);
+
+              // Store baseline score for comparison
+              if (this.state.testType === 'baseline') {
+                this.state.baselineScore = results.brainScore;
+              }
+
+              // Show comparison if this is a retest
+              if (this.state.testType === 'retest' && this.state.baselineScore !== null) {
+                this.displayComparison(results.brainScore, this.state.baselineScore);
+              }
+
+              // Update Klaviyo profile properties
+              var profileUpdate = {};
+              profileUpdate['stroop_' + this.state.testType + '_score'] = results.brainScore;
+              profileUpdate['stroop_last_test_date'] = new Date().toISOString();
+              profileUpdate['stroop_test_type'] = this.state.testType;
+              if (this.state.testType === 'retest') {
+                profileUpdate['stroop_score_change'] = results.brainScore - this.state.baselineScore;
+              }
+              _learnq.push(['identify', Object.assign({ '$email': this.state.leadData.email }, profileUpdate)]);
             },
 
             displayInsight: function(score) {
@@ -1330,7 +1543,7 @@
 
               const trend = this.state.history[this.state.history.length - 1].score > this.state.history[0].score ? 'improving' : 'fluctuating';
               const improvement = this.state.history[this.state.history.length - 1].score - this.state.history[0].score;
-              historySummary.innerHTML = 'You have taken this test <strong>' + this.state.history.length + ' times</strong>. Your score is <strong>' + trend + '</strong> with a ' + (improvement > 0 ? '+' : '') + improvement + ' point change.';
+              historySummary.innerHTML = `You've taken this test <strong>${this.state.history.length} times</strong>. Your score is <strong>${trend}</strong> with a ${improvement > 0 ? '+' : ''}${improvement} point change.`;
             },
 
             switchScreen: function(screenId) {
@@ -1338,10 +1551,111 @@
               document.getElementById(screenId).classList.add('brain-score__screen--active');
             },
 
+            displayComparison: function(retestScore, baselineScore) {
+              var change = retestScore - baselineScore;
+              var compEl = document.getElementById('bs-comparison');
+              var changeEl = document.getElementById('bs-comparison-change');
+              var detailEl = document.getElementById('bs-comparison-detail');
+
+              compEl.style.display = 'block';
+
+              var sign = change > 0 ? '+' : '';
+              changeEl.textContent = sign + change + ' points';
+
+              if (change > 0) {
+                changeEl.className = 'brain-score__comparison-change brain-score__comparison-change--positive';
+                detailEl.textContent = 'Your focus improved from ' + baselineScore + ' to ' + retestScore + ' after Kenetik. That\'s your brain on better fuel.';
+              } else if (change < 0) {
+                changeEl.className = 'brain-score__comparison-change brain-score__comparison-change--negative';
+                detailEl.textContent = 'Your score went from ' + baselineScore + ' to ' + retestScore + '. Cognitive performance varies naturally. Try retesting when you\'re more rested.';
+              } else {
+                changeEl.className = 'brain-score__comparison-change brain-score__comparison-change--neutral';
+                detailEl.textContent = 'Your score held steady at ' + retestScore + '. Consistent performance is its own signal.';
+              }
+
+              // Hide the countdown timer section on retest results
+              document.getElementById('bs-countdown-timer').style.display = 'none';
+            },
+
+            startCountdownTimer: function() {
+              var self = this;
+              var timerEl = document.getElementById('bs-countdown-timer');
+              var displayEl = document.getElementById('bs-timer-display');
+              var fillEl = document.getElementById('bs-timer-fill');
+              var statusEl = document.getElementById('bs-timer-status');
+              var startBtn = document.getElementById('bs-start-countdown');
+              var retestNowBtn = document.getElementById('bs-retest-now');
+              var titleEl = document.getElementById('bs-timer-title');
+              var subtitleEl = document.getElementById('bs-timer-subtitle');
+
+              // Activate timer display
+              timerEl.classList.add('brain-score__countdown-timer--active');
+              startBtn.style.display = 'none';
+              subtitleEl.textContent = 'Your Kenetik is working. Retest when the timer hits zero.';
+              statusEl.style.display = 'block';
+
+              var totalSeconds = this.state.countdownSeconds;
+              var remaining = totalSeconds;
+
+              // Klaviyo: Track countdown started
+              _learnq.push(['track', 'Brain Score Countdown Started', {
+                test_name: 'stroop',
+                baseline_score: this.state.baselineScore,
+                countdown_minutes: 30
+              }]);
+
+              this.state.countdownInterval = setInterval(function() {
+                remaining--;
+                var mins = Math.floor(remaining / 60);
+                var secs = remaining % 60;
+                displayEl.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+                fillEl.style.width = ((remaining / totalSeconds) * 100) + '%';
+
+                if (remaining <= 0) {
+                  clearInterval(self.state.countdownInterval);
+                  timerEl.classList.add('brain-score__countdown-timer--complete');
+                  titleEl.textContent = 'Time\'s up. Ready to retest?';
+                  subtitleEl.textContent = 'See how Kenetik affected your focus and processing speed.';
+                  displayEl.style.display = 'none';
+                  statusEl.style.display = 'none';
+                  retestNowBtn.style.display = 'inline-block';
+
+                  // Klaviyo: Track countdown complete
+                  _learnq.push(['track', 'Brain Score Countdown Complete', {
+                    test_name: 'stroop',
+                    baseline_score: self.state.baselineScore
+                  }]);
+                }
+              }, 1000);
+            },
+
+            startRetest: function() {
+              this.state.testType = 'retest';
+              document.getElementById('bs-comparison').style.display = 'none';
+              this.generateTrials();
+              this.switchScreen('bs-countdown');
+              this.startCountdown();
+            },
+
             resetAndRestart: function() {
+              // Clear countdown if running
+              if (this.state.countdownInterval) {
+                clearInterval(this.state.countdownInterval);
+              }
               document.getElementById('bs-form').reset();
               document.querySelectorAll('.brain-score__use-case').forEach(label => label.classList.remove('selected'));
               this.state.leadData = { name: '', email: '', phone: '', use_case: '' };
+              this.state.testType = 'baseline';
+              this.state.baselineScore = null;
+              document.getElementById('bs-comparison').style.display = 'none';
+              // Reset countdown timer UI
+              var timerEl = document.getElementById('bs-countdown-timer');
+              timerEl.classList.remove('brain-score__countdown-timer--active', 'brain-score__countdown-timer--complete');
+              timerEl.style.display = '';
+              document.getElementById('bs-start-countdown').style.display = '';
+              document.getElementById('bs-retest-now').style.display = 'none';
+              document.getElementById('bs-timer-title').textContent = 'Ready to see Kenetik in action?';
+              document.getElementById('bs-timer-subtitle').textContent = 'Drink a Kenetik, then retest in 30 minutes to compare your baseline.';
               this.generateTrials();
               this.switchScreen('bs-intro');
               this.updateFormValidation();
