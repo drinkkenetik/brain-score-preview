@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenetik Brain Score: Stroop Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rokkitt:wght@300;500;800&display=swap" rel="stylesheet">
+    <style>
+        /* Kenetik Brain Score - Stroop Test */
+        /* Brand: White background, black text, Avenir body, museo-slab headings */
+        /* Accent gradient: #E84B63 to #F4B341, pill buttons */
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        .brain-score {
+          background: #ffffff;
+          color: #000000;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+          padding: 80px 0 60px;
+          min-height: 100vh;
+        }
+
+        .brain-score__container {
+          max-width: 680px;
+          margin: 0 auto;
+          padding: 0 24px;
+          width: 100%;
+          text-align: center;
+        }
+
+        .brain-score__intro {
+          max-width: 560px;
+          margin: 0 auto;
+        }
+
+        .brain-score__eyebrow {
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 2.5px;
+          text-transform: uppercase;
+          color: #E84B63;
+          margin-bottom: 16px;
+        }
+
+        .brain-score__title {
+          font-family: "Rokkitt", "Rockwell", "Courier New", serif;
+          font-size: 42px;
+          font-weight: 500;
+          line-height: 1.19;
+          margin-bottom: 20px;
+          color: #000000;
+        }
+
+        .brain-score__subtitle {
+          font-size: 17px;
+          font-weight: 400;
+          line-height: 1.6;
+          color: #555555;
+          margin-bottom: 40px;
+        }
+
+        .brain-score__how-it-works {
+          text-align: left;
+          background: #f7f7f7;
+          border-radius: 12px;
+          padding: 32px;
+          margin-bottom: 40px;
+        }
+
+        .brain-score__how-title {
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: #999999;
+          margin-bottom: 20px;
+        }
+
+        .brain-score__step {
+          display: flex;
+          align-items: flex-start;
+          gap: 16px;
+          margin-bottom: 16px;
+        }
+
+        .brain-score__step:last-child {
+          margin-bottom: 0;
+        }
+
+        .brain-score__step-num {
+          font-size: 13px;
+          font-weight: 800;
+          color: #ffffff;
+          background: #000000;
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          margin-top: 1px;
+        }
+
+        .brain-score__step-text {
+          font-size: 15px;
+          font-weight: 400;
+          line-height: 1.5;
+          color: #333333;
+        }
+
+        .brain-score__form {
+          text-align: left;
+          margin-bottom: 32px;
+        }
+
+        .brain-score__field {
+          margin-bottom: 20px;
+        }
+
+        .brain-score__label {
+          display: block;
+          font-size: 13px;
+          font-weight: 800;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          color: #999999;
+          margin-bottom: 8px;
+        }
+
+        .brain-score__label--optional {
+          color: #bbbbbb;
+          text-transform: none;
+          letter-spacing: 0;
+          font-size: 12px;
+          font-weight: 400;
+        }
+
+        .brain-score__input {
+          width: 100%;
+          padding: 14px 16px;
+          background: #ffffff;
+          border: 1px solid #dddddd;
+          border-radius: 100px;
+          color: #000000;
+          font-size: 16px;
+          font-weight: 400;
+          transition: border-color 0.2s ease;
+          box-sizing: border-box;
+        }
+
+        .brain-score__input:focus {
+          outline: none;
+          border-color: #E84B63;
+        }
+
+        .brain-score__input::placeholder {
+          color: #bbbbbb;
+        }
+
+        .brain-score__use-cases {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .brain-score__use-case {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 14px 16px;
+          background: #ffffff;
+          border: 1px solid #dddddd;
+          border-radius: 100px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .brain-score__use-case:hover {
+          border-color: #999999;
+        }
+
+        .brain-score__use-case.selected {
+          border-color: #E84B63;
+          background: #fff8f8;
+        }
+
+        .brain-score__use-case input[type="radio"] {
+          display: none;
+        }
+
+        .brain-score__radio-circle {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          border: 2px solid #dddddd;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          transition: all 0.2s ease;
+        }
+
+        .brain-score__use-case.selected .brain-score__radio-circle {
+          border-color: #E84B63;
+        }
+
+        .brain-score__radio-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: #E84B63;
+          opacity: 0;
+          transition: opacity 0.2s ease;
+        }
+
+        .brain-score__use-case.selected .brain-score__radio-dot {
+          opacity: 1;
+        }
+
+        .brain-score__use-case-label {
+          font-size: 15px;
+          font-weight: 500;
+          color: #333333;
+          line-height: 1.4;
+        }
+
+        .brain-score__use-case.selected .brain-score__use-case-label {
+          color: #000000;
+        }
+
+        .brain-score__btn {
+          display: inline-block;
+          position: relative;
+          background: linear-gradient(90deg, #E84B63 0%, #F4B341 100%);
+          border-radius: 100px;
+          overflow: hidden;
+          padding: 2px;
+          border: none;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          text-decoration: none;
+        }
+
+        .brain-score__btn span {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+          padding: 14px 48px;
+          border-radius: 100px;
+          background: #000000;
+          color: #ffffff;
+          font-size: 16px;
+          font-weight: 800;
+          letter-spacing: 0.5px;
+          transition: all 0.3s ease;
+        }
+
+        .brain-score__btn:hover span {
+          background: transparent;
+          color: #ffffff;
+        }
+
+        .brain-score__btn:disabled {
+          opacity: 0.3;
+          cursor: not-allowed;
+        }
+
+        .brain-score__btn:disabled:hover span {
+          background: #000000;
+        }
+
+        .brain-score__btn--secondary span {
+          background: #ffffff;
+          color: #000000;
+        }
+
+        .brain-score__btn--secondary:hover span {
+          background: transparent;
+          color: #ffffff;
+        }
+
+        .brain-score__test {
+          position: relative;
+        }
+
+        .brain-score__progress {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 40px;
+        }
+
+        .brain-score__progress-bar {
+          flex: 1;
+          height: 4px;
+          background: #eeeeee;
+          border-radius: 2px;
+          margin: 0 20px;
+          overflow: hidden;
+        }
+
+        .brain-score__progress-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #E84B63 0%, #F4B341 100%);
+          border-radius: 2px;
+          transition: width 0.3s ease;
+        }
+
+        .brain-score__progress-count {
+          font-size: 13px;
+          font-weight: 500;
+          color: #999999;
+          letter-spacing: 1px;
+          white-space: nowrap;
+        }
+
+        .brain-score__trial-type {
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: #bbbbbb;
+          margin-bottom: 8px;
+        }
+
+        .brain-score__instruction {
+          font-size: 16px;
+          font-weight: 500;
+          color: #777777;
+          margin-bottom: 48px;
+          line-height: 1.5;
+        }
+
+        .brain-score__stimulus-area {
+          min-height: 200px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 48px;
+        }
+
+        .brain-score__stimulus-word {
+          font-family: "Rokkitt", "Rockwell", serif;
+          font-size: 72px;
+          font-weight: 800;
+          letter-spacing: 4px;
+          text-transform: uppercase;
+          user-select: none;
+          transition: opacity 0.15s ease;
+        }
+
+        .brain-score__responses {
+          display: flex;
+          gap: 12px;
+          justify-content: center;
+          flex-wrap: wrap;
+          margin-bottom: 24px;
+        }
+
+        .brain-score__response-btn {
+          padding: 14px 32px;
+          font-size: 15px;
+          font-weight: 800;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          background: #ffffff;
+          border: 2px solid #eeeeee;
+          border-radius: 100px;
+          cursor: pointer;
+          transition: all 0.15s ease;
+          min-width: 100px;
+        }
+
+        .brain-score__response-btn:hover {
+          border-color: #cccccc;
+          background: #f9f9f9;
+        }
+
+        .brain-score__response-btn[data-color="red"] { color: #E84B63; }
+        .brain-score__response-btn[data-color="blue"] { color: #2266cc; }
+        .brain-score__response-btn[data-color="green"] { color: #2d9d4e; }
+        .brain-score__response-btn[data-color="yellow"] { color: #d4a017; }
+
+        .brain-score__response-btn:active {
+          transform: scale(0.97);
+        }
+
+        .brain-score__feedback {
+          font-size: 14px;
+          font-weight: 800;
+          height: 20px;
+          margin-top: 8px;
+          transition: opacity 0.2s ease;
+        }
+
+        .brain-score__feedback--correct { color: #2d9d4e; }
+        .brain-score__feedback--incorrect { color: #E84B63; }
+
+        .brain-score__keyboard-hint {
+          font-size: 12px;
+          color: #bbbbbb;
+          margin-top: 16px;
+        }
+
+        .brain-score__keyboard-hint kbd {
+          display: inline-block;
+          padding: 2px 8px;
+          background: #f5f5f5;
+          border: 1px solid #dddddd;
+          border-radius: 4px;
+          font-size: 11px;
+          font-weight: 800;
+          color: #999999;
+          margin: 0 2px;
+        }
+
+        .brain-score__results { max-width: 560px; margin: 0 auto; }
+
+        .brain-score__score-display { margin-bottom: 40px; }
+
+        .brain-score__score-number {
+          font-family: "Rokkitt", serif;
+          font-size: 96px;
+          font-weight: 300;
+          line-height: 1;
+          margin-bottom: 8px;
+          background: linear-gradient(90deg, #E84B63 0%, #F4B341 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .brain-score__score-label {
+          font-size: 13px;
+          font-weight: 800;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          color: #999999;
+        }
+
+        .brain-score__metrics {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 1px;
+          background: #eeeeee;
+          border-radius: 12px;
+          overflow: hidden;
+          margin-bottom: 24px;
+        }
+
+        .brain-score__metric {
+          background: #f7f7f7;
+          padding: 24px 16px;
+          text-align: center;
+        }
+
+        .brain-score__metric-value {
+          font-family: "Rokkitt", serif;
+          font-size: 28px;
+          font-weight: 500;
+          margin-bottom: 6px;
+          color: #000000;
+        }
+
+        .brain-score__metric-label {
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: #999999;
+        }
+
+        .brain-score__breakdown {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1px;
+          background: #eeeeee;
+          border-radius: 12px;
+          overflow: hidden;
+          margin-bottom: 32px;
+        }
+
+        .brain-score__breakdown-item {
+          background: #f7f7f7;
+          padding: 20px 16px;
+          text-align: center;
+        }
+
+        .brain-score__breakdown-value {
+          font-family: "Rokkitt", serif;
+          font-size: 22px;
+          font-weight: 500;
+          margin-bottom: 4px;
+          color: #000000;
+        }
+
+        .brain-score__breakdown-label {
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: #bbbbbb;
+        }
+
+        .brain-score__perf-bar-wrap { margin-bottom: 32px; text-align: left; }
+
+        .brain-score__perf-bar-title {
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: #999999;
+          margin-bottom: 12px;
+          text-align: center;
+        }
+
+        .brain-score__perf-bar {
+          height: 8px;
+          background: #eeeeee;
+          border-radius: 4px;
+          overflow: hidden;
+        }
+
+        .brain-score__perf-bar-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #E84B63 0%, #F4B341 100%);
+          border-radius: 4px;
+          transition: width 1s ease;
+        }
+
+        .brain-score__perf-bar-labels {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 6px;
+          font-size: 10px;
+          font-weight: 500;
+          color: #bbbbbb;
+        }
+
+        .brain-score__insight {
+          background: #f7f7f7;
+          border-radius: 12px;
+          padding: 28px 32px;
+          margin-bottom: 32px;
+          text-align: left;
+        }
+
+        .brain-score__insight-title {
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: #999999;
+          margin-bottom: 12px;
+        }
+
+        .brain-score__insight-text {
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 1.6;
+          color: #333333;
+        }
+
+        .brain-score__science-fact {
+          background: linear-gradient(135deg, rgba(232,75,99,0.06) 0%, rgba(244,179,65,0.06) 100%);
+          border: 1px solid rgba(232,75,99,0.15);
+          border-radius: 12px;
+          padding: 28px 32px;
+          margin-bottom: 32px;
+          text-align: left;
+        }
+
+        .brain-score__science-fact-eyebrow {
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          background: linear-gradient(90deg, #E84B63, #F4B341);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          margin-bottom: 12px;
+        }
+
+        .brain-score__science-fact-text {
+          font-size: 15px;
+          font-weight: 400;
+          line-height: 1.65;
+          color: #333333;
+          margin-bottom: 16px;
+        }
+
+        .brain-score__science-fact-link {
+          font-size: 14px;
+          font-weight: 600;
+          color: #E84B63;
+          text-decoration: none;
+        }
+
+        .brain-score__science-fact-link:hover { color: #F4B341; }
+
+        .brain-score__results-actions {
+          display: flex;
+          gap: 16px;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .brain-score__retest-opt-in {
+          background: #f7f7f7;
+          border-radius: 12px;
+          padding: 24px 32px;
+          margin-bottom: 32px;
+          text-align: left;
+        }
+
+        .brain-score__retest-text {
+          font-size: 15px;
+          font-weight: 400;
+          color: #555555;
+          line-height: 1.5;
+        }
+
+        .brain-score__screen {
+          display: none;
+          animation: brainScoreFadeIn 0.4s ease;
+        }
+
+        .brain-score__screen--active { display: block; }
+
+        @keyframes brainScoreFadeIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .brain-score__countdown {
+          font-family: "Rokkitt", serif;
+          font-size: 72px;
+          font-weight: 300;
+          color: #000000;
+          min-height: 300px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .brain-score__history {
+          background: #f7f7f7;
+          border-radius: 12px;
+          padding: 28px 32px;
+          margin-bottom: 32px;
+          text-align: center;
+        }
+
+        .brain-score__history-title {
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          color: #999999;
+          margin-bottom: 24px;
+        }
+
+        .brain-score__history-chart {
+          position: relative;
+          height: 120px;
+          margin: 0 20px 8px;
+        }
+
+        .brain-score__history-svg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 120px;
+          overflow: visible;
+        }
+
+        .brain-score__history-dot {
+          position: absolute;
+          width: 10px;
+          height: 10px;
+          background: #E84B63;
+          border: 2px solid #ffffff;
+          border-radius: 50%;
+          transform: translate(-50%, 50%);
+          z-index: 2;
+        }
+
+        .brain-score__history-dot:last-of-type {
+          background: linear-gradient(135deg, #E84B63, #F4B341);
+          width: 14px;
+          height: 14px;
+          border-width: 3px;
+        }
+
+        .brain-score__history-dot-score {
+          position: absolute;
+          bottom: calc(100% + 6px);
+          left: 50%;
+          transform: translateX(-50%);
+          font-family: "Rokkitt", serif;
+          font-size: 13px;
+          font-weight: 500;
+          color: #000000;
+          white-space: nowrap;
+        }
+
+        .brain-score__history-labels {
+          position: relative;
+          height: 20px;
+          margin: 0 20px 16px;
+        }
+
+        .brain-score__history-date {
+          position: absolute;
+          transform: translateX(-50%);
+          font-size: 10px;
+          font-weight: 500;
+          color: #bbbbbb;
+          white-space: nowrap;
+        }
+
+        .brain-score__history-summary {
+          font-size: 14px;
+          font-weight: 400;
+          color: #555555;
+          line-height: 1.5;
+          text-align: left;
+        }
+
+        @media (max-width: 767px) {
+          .brain-score { padding: 40px 0; }
+          .brain-score__title { font-size: 32px; }
+          .brain-score__stimulus-word { font-size: 48px; }
+          .brain-score__responses { gap: 8px; }
+          .brain-score__response-btn { padding: 12px 20px; font-size: 13px; min-width: 80px; }
+          .brain-score__metrics { grid-template-columns: 1fr; }
+          .brain-score__breakdown { grid-template-columns: 1fr; }
+          .brain-score__score-number { font-size: 72px; }
+          .brain-score__how-it-works { padding: 24px; }
+          .brain-score__results-actions { flex-direction: column; }
+          .brain-score__btn { width: 100%; }
+          .brain-score__history { padding: 20px 16px; }
+          .brain-score__history-chart { margin: 0 10px 8px; height: 100px; }
+          .brain-score__history-svg { height: 100px; }
+          .brain-score__history-labels { margin: 0 10px 12px; }
+          .brain-score__history-dot-score { font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+    <section class="brain-score" id="brain-score">
+      <div class="brain-score__container">
+
+        <!-- SCREEN 1: Intro + Lead Capture -->
+        <div class="brain-score__screen brain-score__screen--active" id="bs-intro">
+          <div class="brain-score__intro">
+            <div class="brain-score__eyebrow">Kenetik Brain Score</div>
+            <h1 class="brain-score__title">How sharp is your focus right now?</h1>
+            <p class="brain-score__subtitle">A 2-minute cognitive test that measures your processing speed and attention control. The same mental functions studied in ketone research.</p>
+
+            <div class="brain-score__how-it-works">
+              <div class="brain-score__how-title">How it works</div>
+              <div class="brain-score__step">
+                <div class="brain-score__step-num">1</div>
+                <div class="brain-score__step-text">You'll see color words displayed in different ink colors. Your job: identify the ink color, not the word.</div>
+              </div>
+              <div class="brain-score__step">
+                <div class="brain-score__step-num">2</div>
+                <div class="brain-score__step-text">20 rounds. Some are straightforward. Some require your brain to override what it reads. That's the test.</div>
+              </div>
+              <div class="brain-score__step">
+                <div class="brain-score__step-num">3</div>
+                <div class="brain-score__step-text">You'll get a Brain Score based on speed and accuracy, with an invitation to track it over time.</div>
+              </div>
+            </div>
+
+            <form class="brain-score__form" id="bs-form" onsubmit="return false;">
+              <div class="brain-score__field">
+                <label class="brain-score__label" for="bs-name">First Name</label>
+                <input class="brain-score__input" type="text" id="bs-name" name="name" placeholder="Your first name" required autocomplete="given-name">
+              </div>
+              <div class="brain-score__field">
+                <label class="brain-score__label" for="bs-email">Email</label>
+                <input class="brain-score__input" type="email" id="bs-email" name="email" placeholder="you@example.com" required autocomplete="email">
+              </div>
+              <div class="brain-score__field">
+                <label class="brain-score__label" for="bs-phone">
+                  Phone
+                  <span class="brain-score__label--optional">(optional, for retest reminders)</span>
+                </label>
+                <input class="brain-score__input" type="tel" id="bs-phone" name="phone" placeholder="(555) 555-5555" autocomplete="tel">
+              </div>
+              <div class="brain-score__field">
+                <label class="brain-score__label">What brings you to Kenetik?</label>
+                <div class="brain-score__use-cases" id="bs-use-cases">
+                  <label class="brain-score__use-case" data-value="cognitive-performance">
+                    <input type="radio" name="use_case" value="cognitive-performance">
+                    <span class="brain-score__radio-circle"><span class="brain-score__radio-dot"></span></span>
+                    <span class="brain-score__use-case-label">Focus and cognitive performance</span>
+                  </label>
+                  <label class="brain-score__use-case" data-value="athletic-performance">
+                    <input type="radio" name="use_case" value="athletic-performance">
+                    <span class="brain-score__radio-circle"><span class="brain-score__radio-dot"></span></span>
+                    <span class="brain-score__use-case-label">Athletic performance and recovery</span>
+                  </label>
+                  <label class="brain-score__use-case" data-value="brain-health">
+                    <input type="radio" name="use_case" value="brain-health">
+                    <span class="brain-score__radio-circle"><span class="brain-score__radio-dot"></span></span>
+                    <span class="brain-score__use-case-label">Long-term brain health and cognitive protection</span>
+                  </label>
+                  <label class="brain-score__use-case" data-value="stimulant-free">
+                    <input type="radio" name="use_case" value="stimulant-free">
+                    <span class="brain-score__radio-circle"><span class="brain-score__radio-dot"></span></span>
+                    <span class="brain-score__use-case-label">A clean alternative to caffeine and stimulants</span>
+                  </label>
+                </div>
+              </div>
+              <button class="brain-score__btn" id="bs-start-btn" type="button" disabled><span>Start the Test</span></button>
+            </form>
+          </div>
+        </div>
+
+        <!-- SCREEN 2: Countdown -->
+        <div class="brain-score__screen" id="bs-countdown">
+          <div class="brain-score__eyebrow">Get Ready</div>
+          <p class="brain-score__instruction">Identify the ink color of each word. Not the word itself.</p>
+          <div class="brain-score__countdown" id="bs-countdown-num">3</div>
+        </div>
+
+        <!-- SCREEN 3: Active Test -->
+        <div class="brain-score__screen" id="bs-test">
+          <div class="brain-score__test">
+            <div class="brain-score__progress">
+              <span class="brain-score__progress-count" id="bs-trial-count">1 / 20</span>
+              <div class="brain-score__progress-bar">
+                <div class="brain-score__progress-fill" id="bs-progress-fill" style="width: 5%"></div>
+              </div>
+              <span class="brain-score__trial-type" id="bs-trial-type"></span>
+            </div>
+
+            <p class="brain-score__instruction">What color is the ink?</p>
+
+            <div class="brain-score__stimulus-area">
+              <div class="brain-score__stimulus-word" id="bs-stimulus">RED</div>
+            </div>
+
+            <div class="brain-score__responses" id="bs-responses">
+              <button class="brain-score__response-btn" data-color="red" type="button">Red</button>
+              <button class="brain-score__response-btn" data-color="blue" type="button">Blue</button>
+              <button class="brain-score__response-btn" data-color="green" type="button">Green</button>
+              <button class="brain-score__response-btn" data-color="yellow" type="button">Yellow</button>
+            </div>
+
+            <div class="brain-score__feedback" id="bs-feedback">&nbsp;</div>
+
+            <div class="brain-score__keyboard-hint">
+              Keyboard: <kbd>1</kbd> Red &nbsp; <kbd>2</kbd> Blue &nbsp; <kbd>3</kbd> Green &nbsp; <kbd>4</kbd> Yellow
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN 4: Results -->
+        <div class="brain-score__screen" id="bs-results">
+          <div class="brain-score__results">
+            <div class="brain-score__eyebrow">Your Brain Score</div>
+
+            <div class="brain-score__score-display">
+              <div class="brain-score__score-number" id="bs-score">--</div>
+              <div class="brain-score__score-label">out of 100</div>
+            </div>
+
+            <div class="brain-score__metrics">
+              <div class="brain-score__metric">
+                <div class="brain-score__metric-value" id="bs-accuracy">--%</div>
+                <div class="brain-score__metric-label">Accuracy</div>
+              </div>
+              <div class="brain-score__metric">
+                <div class="brain-score__metric-value" id="bs-avg-time">--ms</div>
+                <div class="brain-score__metric-label">Avg Speed</div>
+              </div>
+              <div class="brain-score__metric">
+                <div class="brain-score__metric-value" id="bs-stroop-effect">--ms</div>
+                <div class="brain-score__metric-label">Stroop Effect</div>
+              </div>
+            </div>
+
+            <div class="brain-score__breakdown" id="bs-breakdown">
+              <div class="brain-score__breakdown-item">
+                <div class="brain-score__breakdown-value" id="bs-cong-speed">--ms</div>
+                <div class="brain-score__breakdown-label">Congruent Speed</div>
+              </div>
+              <div class="brain-score__breakdown-item">
+                <div class="brain-score__breakdown-value" id="bs-incong-speed">--ms</div>
+                <div class="brain-score__breakdown-label">Incongruent Speed</div>
+              </div>
+              <div class="brain-score__breakdown-item">
+                <div class="brain-score__breakdown-value" id="bs-cong-correct">--/10</div>
+                <div class="brain-score__breakdown-label">Congruent Correct</div>
+              </div>
+              <div class="brain-score__breakdown-item">
+                <div class="brain-score__breakdown-value" id="bs-incong-correct">--/10</div>
+                <div class="brain-score__breakdown-label">Incongruent Correct</div>
+              </div>
+            </div>
+
+            <div class="brain-score__perf-bar-wrap" id="bs-perf-bar-wrap">
+              <div class="brain-score__perf-bar-title">Your Performance</div>
+              <div class="brain-score__perf-bar">
+                <div class="brain-score__perf-bar-fill" id="bs-perf-fill" style="width: 0%"></div>
+              </div>
+              <div class="brain-score__perf-bar-labels">
+                <span>Needs Work</span>
+                <span>Average</span>
+                <span>Excellent</span>
+              </div>
+            </div>
+
+            <div class="brain-score__history" id="bs-history" style="display: none;">
+              <div class="brain-score__history-title">Your Score History</div>
+              <div class="brain-score__history-chart" id="bs-history-chart"></div>
+              <div class="brain-score__history-labels" id="bs-history-labels"></div>
+              <div class="brain-score__history-summary" id="bs-history-summary"></div>
+            </div>
+
+            <div class="brain-score__insight" id="bs-insight">
+              <div class="brain-score__insight-title">What this means</div>
+              <p class="brain-score__insight-text" id="bs-insight-text">Your results are loading...</p>
+            </div>
+
+            <div class="brain-score__science-fact" id="bs-science-fact">
+              <div class="brain-score__science-fact-eyebrow">The Science</div>
+              <p class="brain-score__science-fact-text" id="bs-science-fact-text"></p>
+              <a class="brain-score__science-fact-link" href="https://drinkkenetik.com/pages/science" id="bs-science-link">Explore the research</a>
+            </div>
+
+            <div class="brain-score__retest-opt-in" id="bs-retest-section" style="display: none;">
+              <p class="brain-score__retest-text">Cognitive performance fluctuates throughout the day and across weeks. Track your Brain Score over time to see how your focus and processing speed respond to changes in your routine.</p>
+            </div>
+
+            <div class="brain-score__results-actions">
+              <button class="brain-score__btn" id="bs-retest" type="button"><span>Take It Again</span></button>
+              <a class="brain-score__btn brain-score__btn--secondary" href="https://drinkkenetik.com/collections/all" id="bs-shop"><span>Explore Kenetik</span></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <script>
+        // Kenetik Brain Score - Stroop Test
+        // Standalone version with no Shopify or Klaviyo dependencies
+
+        (function() {
+          const brainScore = {
+            state: {
+              leadData: { name: '', email: '', phone: '', use_case: '' },
+              currentTrial: 0,
+              trials: [],
+              responses: [],
+              startTime: null,
+              testActive: false,
+              history: []
+            },
+
+            colorMap: {
+              'red': '#E84B63',
+              'blue': '#2266cc',
+              'green': '#2d9d4e',
+              'yellow': '#d4a017'
+            },
+
+            words: ['RED', 'BLUE', 'GREEN', 'YELLOW'],
+
+            scienceFacts: [
+              "The Stroop Effect demonstrates how our brain processes conflicting information. When the word 'RED' is printed in blue ink, your brain has to suppress the automatic word-reading response to identify the actual color\u2014a fundamental cognitive process studied in ketone research.",
+              "Processing speed and attention control are among the first cognitive functions to improve with metabolic optimization. The same prefrontal cortex circuits you're testing here are known to be enhanced by ketone availability.",
+              "Your Stroop Effect (the difference between congruent and incongruent trial speeds) measures cognitive control. Research shows ketone metabolism may improve this executive function by up to 27%.",
+              "The prefrontal cortex, responsible for overriding automatic responses, is highly sensitive to metabolic state. This is why focus and reaction time fluctuate based on your fuel source\u2014a key finding in ketone research.",
+              "Consistently strong Stroop scores correlate with better decision-making and reduced impulsivity. These are exactly the cognitive traits athletes and professionals seek to optimize."
+            ],
+
+            init: function() {
+              this.loadHistory();
+              this.setupEventListeners();
+              this.generateTrials();
+            },
+
+            setupEventListeners: function() {
+              const formInputs = document.querySelectorAll('.brain-score__input');
+              const useCaseLabels = document.querySelectorAll('.brain-score__use-case');
+              const startBtn = document.getElementById('bs-start-btn');
+              const retestBtn = document.getElementById('bs-retest');
+              const responseButtons = document.querySelectorAll('.brain-score__response-btn');
+
+              formInputs.forEach(input => {
+                input.addEventListener('change', () => this.updateFormValidation());
+                input.addEventListener('input', () => this.updateFormValidation());
+              });
+
+              useCaseLabels.forEach(label => {
+                label.addEventListener('click', (e) => {
+                  useCaseLabels.forEach(l => l.classList.remove('selected'));
+                  label.classList.add('selected');
+                  const radio = label.querySelector('input[type="radio"]');
+                  radio.checked = true;
+                  this.state.leadData.use_case = radio.value;
+                  this.updateFormValidation();
+                });
+              });
+
+              startBtn.addEventListener('click', () => this.startTest());
+              retestBtn.addEventListener('click', () => this.resetAndRestart());
+
+              responseButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => this.handleResponse(e.target.dataset.color));
+              });
+
+              document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+            },
+
+            updateFormValidation: function() {
+              const name = document.getElementById('bs-name').value.trim();
+              const email = document.getElementById('bs-email').value.trim();
+              const useCase = this.state.leadData.use_case;
+              const startBtn = document.getElementById('bs-start-btn');
+
+              const isValid = name && email && useCase;
+              startBtn.disabled = !isValid;
+            },
+
+            startTest: function() {
+              this.state.leadData.name = document.getElementById('bs-name').value.trim();
+              this.state.leadData.email = document.getElementById('bs-email').value.trim();
+              this.state.leadData.phone = document.getElementById('bs-phone').value.trim();
+
+              console.log('[Klaviyo would send] Identified user with:', {
+                name: this.state.leadData.name,
+                email: this.state.leadData.email,
+                phone: this.state.leadData.phone,
+                use_case: this.state.leadData.use_case
+              });
+
+              this.switchScreen('bs-countdown');
+              this.startCountdown();
+            },
+
+            startCountdown: function() {
+              let count = 3;
+              const countEl = document.getElementById('bs-countdown-num');
+
+              const interval = setInterval(() => {
+                count--;
+                countEl.textContent = count;
+
+                if (count === 0) {
+                  clearInterval(interval);
+                  this.switchScreen('bs-test');
+                  this.startTrials();
+                }
+              }, 1000);
+            },
+
+            generateTrials: function() {
+              this.state.trials = [];
+              const congruentTrials = [];
+              const incongruentTrials = [];
+
+              for (let i = 0; i < 10; i++) {
+                congruentTrials.push({
+                  word: this.words[i % 4],
+                  color: this.words[i % 4].toLowerCase(),
+                  type: 'congruent'
+                });
+
+                const randomColor = this.words[Math.floor(Math.random() * 4)];
+                let color = randomColor.toLowerCase();
+                let word = this.words[Math.floor(Math.random() * 4)];
+
+                while (word.toLowerCase() === color) {
+                  word = this.words[Math.floor(Math.random() * 4)];
+                }
+
+                incongruentTrials.push({
+                  word: word,
+                  color: color,
+                  type: 'incongruent'
+                });
+              }
+
+              this.state.trials = [...congruentTrials, ...incongruentTrials].sort(() => Math.random() - 0.5);
+              this.state.responses = [];
+              this.state.currentTrial = 0;
+            },
+
+            startTrials: function() {
+              this.state.testActive = true;
+              this.state.startTime = Date.now();
+              this.displayTrial();
+            },
+
+            displayTrial: function() {
+              if (this.state.currentTrial >= this.state.trials.length) {
+                this.finishTest();
+                return;
+              }
+
+              const trial = this.state.trials[this.state.currentTrial];
+              const stimulusEl = document.getElementById('bs-stimulus');
+              const feedbackEl = document.getElementById('bs-feedback');
+              const trialCountEl = document.getElementById('bs-trial-count');
+              const trialTypeEl = document.getElementById('bs-trial-type');
+              const progressFill = document.getElementById('bs-progress-fill');
+
+              stimulusEl.textContent = trial.word;
+              stimulusEl.style.color = this.colorMap[trial.color];
+              feedbackEl.textContent = '';
+              feedbackEl.className = 'brain-score__feedback';
+
+              trialCountEl.textContent = (this.state.currentTrial + 1) + ' / 20';
+              trialTypeEl.textContent = trial.type === 'congruent' ? 'Congruent' : 'Incongruent';
+
+              const progressPercent = ((this.state.currentTrial + 1) / 20) * 100;
+              progressFill.style.width = progressPercent + '%';
+
+              this.trialStartTime = Date.now();
+            },
+
+            handleResponse: function(selectedColor) {
+              if (!this.state.testActive || this.state.currentTrial >= this.state.trials.length) return;
+
+              const trial = this.state.trials[this.state.currentTrial];
+              const responseTime = Date.now() - this.trialStartTime;
+              const isCorrect = selectedColor === trial.color;
+
+              this.state.responses.push({
+                trial: this.state.currentTrial,
+                selectedColor: selectedColor,
+                correctColor: trial.color,
+                isCorrect: isCorrect,
+                responseTime: responseTime,
+                trialType: trial.type
+              });
+
+              const feedbackEl = document.getElementById('bs-feedback');
+              feedbackEl.textContent = isCorrect ? 'Correct!' : 'Incorrect';
+              feedbackEl.className = isCorrect
+                ? 'brain-score__feedback brain-score__feedback--correct'
+                : 'brain-score__feedback brain-score__feedback--incorrect';
+
+              setTimeout(() => {
+                this.state.currentTrial++;
+                this.displayTrial();
+              }, 400);
+            },
+
+            handleKeyboard: function(e) {
+              if (!this.state.testActive) return;
+
+              const keyMap = { '1': 'red', '2': 'blue', '3': 'green', '4': 'yellow' };
+              if (keyMap[e.key]) {
+                this.handleResponse(keyMap[e.key]);
+              }
+            },
+
+            finishTest: function() {
+              this.state.testActive = false;
+              this.calculateScores();
+              this.displayResults();
+              this.switchScreen('bs-results');
+            },
+
+            calculateScores: function() {
+              const congruent = this.state.responses.filter(r => r.trialType === 'congruent');
+              const incongruent = this.state.responses.filter(r => r.trialType === 'incongruent');
+
+              const congruentCorrect = congruent.filter(r => r.isCorrect).length;
+              const incongruentCorrect = incongruent.filter(r => r.isCorrect).length;
+              const totalCorrect = congruentCorrect + incongruentCorrect;
+
+              const congruentTimes = congruent.filter(r => r.isCorrect).map(r => r.responseTime);
+              const incongruentTimes = incongruent.filter(r => r.isCorrect).map(r => r.responseTime);
+
+              const avgCongruent = congruentTimes.length > 0 ? congruentTimes.reduce((a, b) => a + b) / congruentTimes.length : 0;
+              const avgIncongruent = incongruentTimes.length > 0 ? incongruentTimes.reduce((a, b) => a + b) / incongruentTimes.length : 0;
+              const stroopEffect = avgIncongruent - avgCongruent;
+
+              const allCorrectTimes = [...congruentTimes, ...incongruentTimes];
+              const avgTime = allCorrectTimes.length > 0 ? allCorrectTimes.reduce((a, b) => a + b) / allCorrectTimes.length : 0;
+
+              const accuracy = (totalCorrect / 20) * 100;
+
+              // Brain Score calculation
+              const accuracyScore = accuracy;
+              const speedScore = Math.max(0, 100 - (avgTime / 10));
+              const controlScore = Math.max(0, 100 - (stroopEffect / 5));
+              const brainScore = Math.round((accuracyScore * 0.4 + speedScore * 0.35 + controlScore * 0.25));
+
+              this.state.results = {
+                brainScore: Math.min(100, Math.max(0, brainScore)),
+                accuracy: Math.round(accuracy),
+                avgTime: Math.round(avgTime),
+                stroopEffect: Math.round(stroopEffect),
+                congruentSpeed: Math.round(avgCongruent),
+                incongruentSpeed: Math.round(avgIncongruent),
+                congruentCorrect: congruentCorrect,
+                incongruentCorrect: incongruentCorrect
+              };
+
+              this.addToHistory(this.state.results.brainScore);
+            },
+
+            displayResults: function() {
+              const results = this.state.results;
+
+              document.getElementById('bs-score').textContent = results.brainScore;
+              document.getElementById('bs-accuracy').textContent = results.accuracy + '%';
+              document.getElementById('bs-avg-time').textContent = results.avgTime + 'ms';
+              document.getElementById('bs-stroop-effect').textContent = results.stroopEffect + 'ms';
+              document.getElementById('bs-cong-speed').textContent = results.congruentSpeed + 'ms';
+              document.getElementById('bs-incong-speed').textContent = results.incongruentSpeed + 'ms';
+              document.getElementById('bs-cong-correct').textContent = results.congruentCorrect + '/10';
+              document.getElementById('bs-incong-correct').textContent = results.incongruentCorrect + '/10';
+
+              const perfPercent = (results.brainScore / 100) * 100;
+              document.getElementById('bs-perf-fill').style.width = perfPercent + '%';
+
+              this.displayInsight(results.brainScore);
+              this.displayScienceFact();
+              this.displayHistory();
+
+              console.log('[Klaviyo would send] Brain Score results:', {
+                name: this.state.leadData.name,
+                email: this.state.leadData.email,
+                use_case: this.state.leadData.use_case,
+                brainScore: results.brainScore,
+                accuracy: results.accuracy,
+                avgSpeed: results.avgTime,
+                stroopEffect: results.stroopEffect
+              });
+            },
+
+            displayInsight: function(score) {
+              const insights = {
+                excellent: "Your focus is sharp. You demonstrate strong cognitive control and quick processing speed\u2014exactly what the research shows can be enhanced with metabolic optimization.",
+                good: "Your processing speed and attention control are solid. This is a great baseline for tracking improvements as you optimize your cognitive performance.",
+                average: "You have room to improve your processing speed and attention control. Cognitive performance fluctuates\u2014retesting after changes to your routine could show significant gains.",
+                needsWork: "Your focus could use improvement. The good news: attention and processing speed are highly trainable. Retest in a few weeks and track your progress."
+              };
+
+              let category = 'needsWork';
+              if (score >= 80) category = 'excellent';
+              else if (score >= 65) category = 'good';
+              else if (score >= 50) category = 'average';
+
+              document.getElementById('bs-insight-text').textContent = insights[category];
+            },
+
+            displayScienceFact: function() {
+              const fact = this.scienceFacts[Math.floor(Math.random() * this.scienceFacts.length)];
+              document.getElementById('bs-science-fact-text').textContent = fact;
+            },
+
+            addToHistory: function(score) {
+              const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+              this.state.history.push({ score, date: today });
+              this.saveHistory();
+            },
+
+            saveHistory: function() {
+              localStorage.setItem('brainScoreHistory', JSON.stringify(this.state.history));
+            },
+
+            loadHistory: function() {
+              const saved = localStorage.getItem('brainScoreHistory');
+              if (saved) {
+                try {
+                  this.state.history = JSON.parse(saved);
+                } catch (e) {
+                  this.state.history = [];
+                }
+              }
+            },
+
+            displayHistory: function() {
+              if (this.state.history.length < 2) return;
+
+              document.getElementById('bs-history').style.display = 'block';
+              const historyChart = document.getElementById('bs-history-chart');
+              const historyLabels = document.getElementById('bs-history-labels');
+              const historySummary = document.getElementById('bs-history-summary');
+
+              historyChart.innerHTML = '';
+              historyLabels.innerHTML = '';
+
+              const maxScore = Math.max(...this.state.history.map(h => h.score), 100);
+              const minScore = Math.min(...this.state.history.map(h => h.score), 0);
+              const range = maxScore - minScore || 1;
+
+              const width = historyChart.offsetWidth;
+              const pointSpacing = width / (this.state.history.length - 1 || 1);
+
+              this.state.history.forEach((item, idx) => {
+                const y = 120 - ((item.score - minScore) / range) * 100;
+                const x = idx * pointSpacing;
+
+                const dot = document.createElement('div');
+                dot.className = 'brain-score__history-dot';
+                dot.style.left = x + 'px';
+                dot.style.top = y + 'px';
+
+                const scoreLabel = document.createElement('div');
+                scoreLabel.className = 'brain-score__history-dot-score';
+                scoreLabel.textContent = item.score;
+                dot.appendChild(scoreLabel);
+
+                historyChart.appendChild(dot);
+
+                if (idx === 0 || idx === this.state.history.length - 1) {
+                  const dateLabel = document.createElement('div');
+                  dateLabel.className = 'brain-score__history-date';
+                  dateLabel.textContent = item.date;
+                  dateLabel.style.left = x + 'px';
+                  historyLabels.appendChild(dateLabel);
+                }
+              });
+
+              const trend = this.state.history[this.state.history.length - 1].score > this.state.history[0].score ? 'improving' : 'fluctuating';
+              const improvement = this.state.history[this.state.history.length - 1].score - this.state.history[0].score;
+              historySummary.innerHTML = 'You have taken this test <strong>' + this.state.history.length + ' times</strong>. Your score is <strong>' + trend + '</strong> with a ' + (improvement > 0 ? '+' : '') + improvement + ' point change.';
+            },
+
+            switchScreen: function(screenId) {
+              document.querySelectorAll('.brain-score__screen').forEach(s => s.classList.remove('brain-score__screen--active'));
+              document.getElementById(screenId).classList.add('brain-score__screen--active');
+            },
+
+            resetAndRestart: function() {
+              document.getElementById('bs-form').reset();
+              document.querySelectorAll('.brain-score__use-case').forEach(label => label.classList.remove('selected'));
+              this.state.leadData = { name: '', email: '', phone: '', use_case: '' };
+              this.generateTrials();
+              this.switchScreen('bs-intro');
+              this.updateFormValidation();
+            }
+          };
+
+          // Initialize when DOM is ready
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => brainScore.init());
+          } else {
+            brainScore.init();
+          }
+        })();
+    </script>
+</body>
+</html>
