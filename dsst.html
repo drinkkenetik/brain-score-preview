@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kenetik Brain Score: DSST</title>
   <link href="https://fonts.googleapis.com/css2?family=Rokkitt:wght@300;500;800&display=swap" rel="stylesheet">
-  
+  <!-- Klaviyo Tracking - Replace YOUR_KLAVIYO_PUBLIC_KEY with actual key -->
+  <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=YOUR_KLAVIYO_PUBLIC_KEY"></script>
+
   <style>
     /* Reset */
     * {
@@ -682,6 +684,130 @@
       justify-content: center;
     }
 
+    /* Kenetik Retest Countdown Timer */
+    .brain-score__countdown-timer {
+      padding: 24px;
+      background: #f0f4ff;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .brain-score__countdown-timer-title {
+      font-family: "Rokkitt", "Rockwell", serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: #000;
+      margin-bottom: 8px;
+    }
+
+    .brain-score__countdown-timer-subtitle {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .brain-score__countdown-timer-display {
+      font-family: "Rokkitt", "Rockwell", serif;
+      font-size: 56px;
+      font-weight: 800;
+      color: #000;
+      margin-bottom: 12px;
+      line-height: 1;
+      display: none;
+    }
+
+    .brain-score__countdown-timer-progress {
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .brain-score__countdown-timer-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4caf50, #ff9800);
+      border-radius: 2px;
+      transition: width 1s linear;
+    }
+
+    .brain-score__countdown-timer-status {
+      font-size: 12px;
+      color: #999;
+      display: none;
+    }
+
+    .brain-score__countdown-timer .brain-score__btn {
+      margin-top: 12px;
+    }
+
+    .brain-score__countdown-timer--active .brain-score__countdown-timer-display,
+    .brain-score__countdown-timer--active .brain-score__countdown-timer-progress,
+    .brain-score__countdown-timer--active .brain-score__countdown-timer-status {
+      display: block;
+    }
+
+    .brain-score__countdown-timer--complete .brain-score__countdown-timer-title {
+      color: #4caf50;
+    }
+
+    .brain-score__test-type-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .brain-score__test-type-badge--baseline {
+      background: #f0f0f0;
+      color: #999;
+    }
+
+    .brain-score__test-type-badge--retest {
+      background: #e8f5e9;
+      color: #4caf50;
+    }
+
+    .brain-score__comparison {
+      padding: 20px;
+      background: #f8f8f8;
+      border-radius: 6px;
+      text-align: center;
+      display: none;
+    }
+
+    .brain-score__comparison-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #999;
+      margin-bottom: 12px;
+    }
+
+    .brain-score__comparison-change {
+      font-family: "Rokkitt", "Rockwell", serif;
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .brain-score__comparison-change--positive { color: #4caf50; }
+    .brain-score__comparison-change--negative { color: #f44336; }
+    .brain-score__comparison-change--neutral { color: #999; }
+
+    .brain-score__comparison-detail {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+    }
+
     /* Responsive */
     @media (max-width: 767px) {
       .brain-score__screen {
@@ -883,6 +1009,7 @@
     <!-- Results Screen -->
     <div class="brain-score__screen" id="dsst-results">
       <div class="brain-score__results">
+        <div class="brain-score__test-type-badge brain-score__test-type-badge--baseline" id="dsst-test-type-badge">Baseline</div>
         <div class="brain-score__eyebrow">Your Brain Score</div>
 
         <div class="brain-score__score-display">
@@ -935,12 +1062,32 @@
           <a class="brain-score__science-fact-link" href="https://drinkkenetik.com/pages/science" id="dsst-science-link">Explore the research</a>
         </div>
 
+        <!-- Before/After Comparison (shown on retest) -->
+        <div class="brain-score__comparison" id="dsst-comparison">
+          <div class="brain-score__comparison-title">Before vs After Kenetik</div>
+          <div class="brain-score__comparison-change" id="dsst-comparison-change">--</div>
+          <div class="brain-score__comparison-detail" id="dsst-comparison-detail"></div>
+        </div>
+
         <div class="brain-score__retest-opt-in" id="dsst-retest-section" style="display: none;">
           <p class="brain-score__retest-text">Processing speed is one of the first cognitive functions affected by fatigue and one of the most responsive to sustained ketone availability. Track yours monthly.</p>
         </div>
 
+        <!-- Kenetik Retest Countdown Timer -->
+        <div class="brain-score__countdown-timer" id="dsst-countdown-timer">
+          <div class="brain-score__countdown-timer-title" id="dsst-timer-title">Ready to see Kenetik in action?</div>
+          <div class="brain-score__countdown-timer-subtitle" id="dsst-timer-subtitle">Drink a Kenetik, then retest in 30 minutes to compare your baseline.</div>
+          <div class="brain-score__countdown-timer-display" id="dsst-timer-display">30:00</div>
+          <div class="brain-score__countdown-timer-progress">
+            <div class="brain-score__countdown-timer-fill" id="dsst-timer-fill" style="width: 100%"></div>
+          </div>
+          <div class="brain-score__countdown-timer-status" id="dsst-timer-status">We'll also send you a reminder via email</div>
+          <button class="brain-score__btn" id="dsst-start-countdown" type="button"><span>Start 30-Min Countdown</span></button>
+          <button class="brain-score__btn" id="dsst-retest-now" type="button" style="display: none;"><span>Retest Now</span></button>
+        </div>
+
         <div class="brain-score__results-actions">
-          <button class="brain-score__btn" id="dsst-retest" type="button"><span>Take It Again</span></button>
+          <button class="brain-score__btn brain-score__btn--secondary" id="dsst-retest" type="button"><span>Take It Again</span></button>
           <a class="brain-score__btn brain-score__btn--secondary" href="https://drinkkenetik.com/collections/all" id="dsst-shop"><span>Explore Kenetik</span></a>
         </div>
       </div>
@@ -952,6 +1099,9 @@
 <script>
 (function() {
   'use strict';
+
+  // Klaviyo helper
+  var _learnq = window._learnq || [];
 
   // Symbols for the DSST test
   const SYMBOLS = ['\u25B2', '\u25C6', '\u25CF', '\u25A0', '\u2726', '\u2605', '\u25BC', '\u2B1F', '\u25CE'];
@@ -1036,7 +1186,11 @@
     testActive: false,
     timerInterval: null,
     responses: [],
-    history: JSON.parse(localStorage.getItem('dsst-history') || '[]')
+    history: JSON.parse(localStorage.getItem('dsst-history') || '[]'),
+    testType: 'baseline',
+    baselineScore: null,
+    countdownInterval: null,
+    countdownSeconds: 1800
   };
 
   // DOM elements
@@ -1095,7 +1249,10 @@
       const symbol = state.digitSymbolMap[digit];
       const keyPair = document.createElement('div');
       keyPair.className = 'dsst__key-pair';
-      keyPair.innerHTML = '<div class="dsst__key-digit">' + digit + '</div><div class="dsst__key-symbol">' + symbol + '</div>';
+      keyPair.innerHTML = `
+        <div class="dsst__key-digit">${digit}</div>
+        <div class="dsst__key-symbol">${symbol}</div>
+      `;
       els.key.appendChild(keyPair);
     }
   }
@@ -1111,12 +1268,12 @@
   function buildResponses() {
     els.responses.innerHTML = '';
     const shuffledSymbols = shuffle(Object.values(state.digitSymbolMap));
-    shuffledSymbols.forEach(function(symbol, idx) {
+    shuffledSymbols.forEach((symbol, idx) => {
       const btn = document.createElement('button');
       btn.className = 'dsst__response-btn';
       btn.textContent = symbol;
       btn.setAttribute('data-symbol', symbol);
-      btn.setAttribute('data-digit', Object.keys(state.digitSymbolMap).find(function(key) { return state.digitSymbolMap[key] === symbol; }));
+      btn.setAttribute('data-digit', Object.keys(state.digitSymbolMap).find(key => state.digitSymbolMap[key] === symbol));
       
       btn.addEventListener('click', handleResponse);
       btn.addEventListener('touchstart', handleResponse);
@@ -1130,14 +1287,14 @@
     if (!state.testActive) return;
     
     e.preventDefault();
-    var btn = e.currentTarget;
-    var selectedDigit = parseInt(btn.getAttribute('data-digit'));
-    var responseTime = Date.now() - state.startTime;
+    const btn = e.currentTarget;
+    const selectedDigit = parseInt(btn.getAttribute('data-digit'));
+    const responseTime = Date.now() - state.startTime;
     
     state.totalCount++;
     state.responseTimes.push(responseTime);
     
-    var isCorrect = selectedDigit === state.currentDigit;
+    const isCorrect = selectedDigit === state.currentDigit;
     if (isCorrect) {
       state.correctCount++;
       btn.classList.add('correct');
@@ -1152,11 +1309,11 @@
     els.liveScore.textContent = state.correctCount;
     
     // Disable all buttons briefly
-    document.querySelectorAll('.dsst__response-btn').forEach(function(b) { b.disabled = true; });
+    document.querySelectorAll('.dsst__response-btn').forEach(b => b.disabled = true);
     
-    setTimeout(function() {
+    setTimeout(() => {
       if (state.testActive) {
-        document.querySelectorAll('.dsst__response-btn').forEach(function(b) { b.disabled = false; });
+        document.querySelectorAll('.dsst__response-btn').forEach(b => b.disabled = false);
         buildResponses();
         pickDigit();
         els.feedback.textContent = '\u00A0';
@@ -1168,10 +1325,10 @@
   function handleKeyPress(e) {
     if (!state.testActive) return;
     
-    var digit = parseInt(e.key);
+    const digit = parseInt(e.key);
     if (digit >= 1 && digit <= 9) {
-      var symbol = state.digitSymbolMap[digit];
-      var btn = document.querySelector('[data-symbol="' + symbol + '"]');
+      const symbol = state.digitSymbolMap[digit];
+      const btn = document.querySelector(`[data-symbol="${symbol}"]`);
       if (btn) {
         btn.click();
       }
@@ -1181,10 +1338,10 @@
   // Start countdown
   function startCountdown() {
     showScreen('dsst-countdown');
-    var count = 3;
+    let count = 3;
     els.countdownNum.textContent = count;
     
-    var countdownInterval = setInterval(function() {
+    const countdownInterval = setInterval(() => {
       count--;
       if (count > 0) {
         els.countdownNum.textContent = count;
@@ -1213,11 +1370,11 @@
 
   // Update timer
   function updateTimer() {
-    var elapsed = Math.floor((Date.now() - state.testStartTime) / 1000);
+    const elapsed = Math.floor((Date.now() - state.testStartTime) / 1000);
     state.timeRemaining = Math.max(0, 90 - elapsed);
     
     els.timer.textContent = state.timeRemaining;
-    var percent = (state.timeRemaining / 90) * 100;
+    const percent = (state.timeRemaining / 90) * 100;
     els.timerFill.style.width = percent + '%';
     
     if (state.timeRemaining <= 10) {
@@ -1234,24 +1391,24 @@
     state.testActive = false;
     clearInterval(state.timerInterval);
     document.removeEventListener('keypress', handleKeyPress);
-    document.querySelectorAll('.dsst__response-btn').forEach(function(b) { b.disabled = true; });
+    document.querySelectorAll('.dsst__response-btn').forEach(b => b.disabled = true);
     
     showResults();
   }
 
   // Calculate score
   function calculateScore() {
-    var accuracy = state.totalCount > 0 ? (state.correctCount / state.totalCount) * 100 : 0;
-    var avgRT = state.responseTimes.length > 0 
-      ? state.responseTimes.reduce(function(a, b) { return a + b; }, 0) / state.responseTimes.length 
+    const accuracy = state.totalCount > 0 ? (state.correctCount / state.totalCount) * 100 : 0;
+    const avgRT = state.responseTimes.length > 0 
+      ? state.responseTimes.reduce((a, b) => a + b, 0) / state.responseTimes.length 
       : 0;
     
     // Scoring formula
-    var throughputScore = Math.max(0, Math.min(100, ((state.correctCount - 15) / 45) * 100));
-    var accuracyScore = accuracy;
-    var speedScore = Math.max(0, Math.min(100, 100 - ((avgRT - 800) / 17)));
+    const throughputScore = Math.max(0, Math.min(100, ((state.correctCount - 15) / 45) * 100));
+    const accuracyScore = accuracy;
+    const speedScore = Math.max(0, Math.min(100, 100 - ((avgRT - 800) / 17)));
     
-    var brainScore = Math.round(
+    const brainScore = Math.round(
       (throughputScore * 0.50) + 
       (accuracyScore * 0.25) + 
       (speedScore * 0.25)
@@ -1263,15 +1420,15 @@
       avgRT: Math.round(avgRT),
       correctCount: state.correctCount,
       totalCount: state.totalCount,
-      throughputScore: throughputScore,
-      accuracyScore: accuracyScore,
-      speedScore: speedScore
+      throughputScore,
+      accuracyScore,
+      speedScore
     };
   }
 
   // Show results
   function showResults() {
-    var results = calculateScore();
+    const results = calculateScore();
     
     // Save to history
     state.history.push({
@@ -1283,20 +1440,65 @@
     });
     localStorage.setItem('dsst-history', JSON.stringify(state.history));
     
-    // Log to console (instead of Klaviyo)
-    console.log('DSST Test Results:', {
-      name: state.userName,
-      email: state.userEmail,
-      phone: state.userPhone,
-      useCase: state.userUseCase,
-      score: results.score,
+    // Klaviyo: Identify user (on first test)
+    if (state.testType === 'baseline') {
+      var identifyData = {
+        '$email': state.userEmail,
+        '$first_name': state.userName,
+        'brain_score_use_case': state.userUseCase
+      };
+      if (state.userPhone) {
+        identifyData['$phone_number'] = state.userPhone;
+      }
+      _learnq.push(['identify', identifyData]);
+    }
+
+    // Klaviyo: Track Brain Score Completed
+    var eventData = {
+      test_name: 'dsst',
+      test_type: state.testType,
+      brain_score: results.score,
       accuracy: results.accuracy,
-      avgSpeed: results.avgRT,
+      avg_speed: results.avgRT,
       completed: results.correctCount,
-      total: results.totalCount,
-      timestamp: new Date().toISOString()
-    });
-    
+      total: results.totalCount
+    };
+    if (state.testType === 'retest' && state.baselineScore !== null) {
+      eventData.baseline_score = state.baselineScore;
+      eventData.score_change = results.score - state.baselineScore;
+    }
+    _learnq.push(['track', 'Brain Score Completed', eventData]);
+    console.log('[Klaviyo] Tracked Brain Score Completed:', eventData);
+
+    // Store baseline score for comparison
+    if (state.testType === 'baseline') {
+      state.baselineScore = results.score;
+    }
+
+    // Update Klaviyo profile properties
+    var profileUpdate = { '$email': state.userEmail };
+    profileUpdate['dsst_' + state.testType + '_score'] = results.score;
+    profileUpdate['dsst_last_test_date'] = new Date().toISOString();
+    if (state.testType === 'retest') {
+      profileUpdate['dsst_score_change'] = results.score - state.baselineScore;
+    }
+    _learnq.push(['identify', profileUpdate]);
+
+    // Update test type badge
+    var badge = document.getElementById('dsst-test-type-badge');
+    if (state.testType === 'retest') {
+      badge.textContent = 'After Kenetik';
+      badge.className = 'brain-score__test-type-badge brain-score__test-type-badge--retest';
+    } else {
+      badge.textContent = 'Baseline';
+      badge.className = 'brain-score__test-type-badge brain-score__test-type-badge--baseline';
+    }
+
+    // Show comparison if retest
+    if (state.testType === 'retest' && state.baselineScore !== null) {
+      displayComparison(results.score, state.baselineScore);
+    }
+
     // Update UI
     els.score.textContent = results.score;
     els.completed.textContent = results.correctCount;
@@ -1308,7 +1510,7 @@
     els.insight.textContent = getInsight(results.score);
     
     // Science fact
-    var fact = SCIENCE_FACTS[Math.floor(Math.random() * SCIENCE_FACTS.length)];
+    const fact = SCIENCE_FACTS[Math.floor(Math.random() * SCIENCE_FACTS.length)];
     els.scienceFact.textContent = fact.text;
     els.scienceLink.href = fact.link;
     
@@ -1323,37 +1525,37 @@
 
   // Show history
   function showHistory() {
-    var last5 = state.history.slice(-5);
-    var maxScore = Math.max.apply(null, last5.map(function(h) { return h.score; }));
+    const last5 = state.history.slice(-5);
+    const maxScore = Math.max(...last5.map(h => h.score));
     
     els.historyChart.innerHTML = '';
     els.historyLabels.innerHTML = '';
     
-    last5.forEach(function(entry, idx) {
-      var bar = document.createElement('div');
+    last5.forEach((entry, idx) => {
+      const bar = document.createElement('div');
       bar.className = 'brain-score__history-bar';
       bar.style.height = ((entry.score / maxScore) * 100) + '%';
       els.historyChart.appendChild(bar);
       
-      var label = document.createElement('span');
+      const label = document.createElement('span');
       label.textContent = (idx + 1);
       els.historyLabels.appendChild(label);
     });
     
-    var avg = Math.round(last5.reduce(function(a, b) { return a + b.score; }, 0) / last5.length);
-    var trend = last5[last5.length - 1].score >= last5[0].score ? '\u2191' : '\u2193';
-    els.historySummary.textContent = 'Average: ' + avg + ' ' + trend;
+    const avg = Math.round(last5.reduce((a, b) => a + b.score, 0) / last5.length);
+    const trend = last5[last5.length - 1].score >= last5[0].score ? '\u2191' : '\u2193';
+    els.historySummary.textContent = `Average: ${avg} ${trend}`;
     
     els.historyEl.style.display = 'block';
   }
 
   // Form handling
   function validateForm() {
-    var name = els.nameInput.value.trim();
-    var email = els.emailInput.value.trim();
-    var useCase = document.querySelector('[name="use_case"]:checked');
+    const name = els.nameInput.value.trim();
+    const email = els.emailInput.value.trim();
+    const useCase = document.querySelector('[name="use_case"]:checked');
     
-    var isValid = name && email && useCase;
+    const isValid = name && email && useCase;
     els.startBtn.disabled = !isValid;
     
     if (isValid) {
@@ -1364,17 +1566,84 @@
     }
   }
 
-  // Event listeners
-  els.nameInput.addEventListener('input', validateForm);
-  els.emailInput.addEventListener('input', validateForm);
-  els.phoneInput.addEventListener('input', validateForm);
-  
-  els.useCases.forEach(function(input) {
-    input.addEventListener('change', validateForm);
-  });
-  
-  els.startBtn.addEventListener('click', startCountdown);
-  els.retestBtn.addEventListener('click', function() {
+  // Comparison display
+  function displayComparison(retestScore, baselineScore) {
+    var change = retestScore - baselineScore;
+    var compEl = document.getElementById('dsst-comparison');
+    var changeEl = document.getElementById('dsst-comparison-change');
+    var detailEl = document.getElementById('dsst-comparison-detail');
+
+    compEl.style.display = 'block';
+
+    var sign = change > 0 ? '+' : '';
+    changeEl.textContent = sign + change + ' points';
+
+    if (change > 0) {
+      changeEl.className = 'brain-score__comparison-change brain-score__comparison-change--positive';
+      detailEl.textContent = 'Your processing speed improved from ' + baselineScore + ' to ' + retestScore + ' after Kenetik. Faster, sharper, cleaner.';
+    } else if (change < 0) {
+      changeEl.className = 'brain-score__comparison-change brain-score__comparison-change--negative';
+      detailEl.textContent = 'Your score went from ' + baselineScore + ' to ' + retestScore + '. Processing speed varies naturally. Try retesting when more rested.';
+    } else {
+      changeEl.className = 'brain-score__comparison-change brain-score__comparison-change--neutral';
+      detailEl.textContent = 'Your score held steady at ' + retestScore + '. Consistent performance is its own signal.';
+    }
+
+    document.getElementById('dsst-countdown-timer').style.display = 'none';
+  }
+
+  // Countdown timer
+  function startCountdownTimer() {
+    var timerEl = document.getElementById('dsst-countdown-timer');
+    var displayEl = document.getElementById('dsst-timer-display');
+    var fillEl = document.getElementById('dsst-timer-fill');
+    var statusEl = document.getElementById('dsst-timer-status');
+    var startBtn = document.getElementById('dsst-start-countdown');
+    var retestNowBtn = document.getElementById('dsst-retest-now');
+    var titleEl = document.getElementById('dsst-timer-title');
+    var subtitleEl = document.getElementById('dsst-timer-subtitle');
+
+    timerEl.classList.add('brain-score__countdown-timer--active');
+    startBtn.style.display = 'none';
+    subtitleEl.textContent = 'Your Kenetik is working. Retest when the timer hits zero.';
+    statusEl.style.display = 'block';
+
+    var totalSeconds = state.countdownSeconds;
+    var remaining = totalSeconds;
+
+    _learnq.push(['track', 'Brain Score Countdown Started', {
+      test_name: 'dsst',
+      baseline_score: state.baselineScore,
+      countdown_minutes: 30
+    }]);
+
+    state.countdownInterval = setInterval(function() {
+      remaining--;
+      var mins = Math.floor(remaining / 60);
+      var secs = remaining % 60;
+      displayEl.textContent = mins + ':' + (secs < 10 ? '0' : '') + secs;
+      fillEl.style.width = ((remaining / totalSeconds) * 100) + '%';
+
+      if (remaining <= 0) {
+        clearInterval(state.countdownInterval);
+        timerEl.classList.add('brain-score__countdown-timer--complete');
+        titleEl.textContent = 'Time\'s up. Ready to retest?';
+        subtitleEl.textContent = 'See how Kenetik affected your processing speed.';
+        displayEl.style.display = 'none';
+        statusEl.style.display = 'none';
+        retestNowBtn.style.display = 'inline-flex';
+
+        _learnq.push(['track', 'Brain Score Countdown Complete', {
+          test_name: 'dsst',
+          baseline_score: state.baselineScore
+        }]);
+      }
+    }, 1000);
+  }
+
+  // Retest (skips form, goes straight to countdown)
+  function startRetest() {
+    state.testType = 'retest';
     state.correctCount = 0;
     state.totalCount = 0;
     state.responseTimes = [];
@@ -1383,8 +1652,62 @@
     state.timeRemaining = 90;
     els.timer.classList.remove('dsst__timer--urgent');
     els.liveScore.textContent = '0';
+    document.getElementById('dsst-comparison').style.display = 'none';
+    startCountdown();
+  }
+
+  // Event listeners
+  els.nameInput.addEventListener('input', validateForm);
+  els.emailInput.addEventListener('input', validateForm);
+  els.phoneInput.addEventListener('input', validateForm);
+  
+  els.useCases.forEach(input => {
+    input.addEventListener('change', validateForm);
+  });
+  
+  els.startBtn.addEventListener('click', function() {
+    // Klaviyo identify on form submit
+    var identifyData = {
+      '$email': state.userEmail,
+      '$first_name': state.userName,
+      'brain_score_use_case': state.userUseCase
+    };
+    if (state.userPhone) {
+      identifyData['$phone_number'] = state.userPhone;
+    }
+    _learnq.push(['identify', identifyData]);
+    console.log('[Klaviyo] Identified:', identifyData);
     startCountdown();
   });
+
+  // "Take It Again" resets everything including form
+  els.retestBtn.addEventListener('click', () => {
+    if (state.countdownInterval) clearInterval(state.countdownInterval);
+    state.testType = 'baseline';
+    state.baselineScore = null;
+    state.correctCount = 0;
+    state.totalCount = 0;
+    state.responseTimes = [];
+    state.startTime = null;
+    state.testStartTime = null;
+    state.timeRemaining = 90;
+    els.timer.classList.remove('dsst__timer--urgent');
+    els.liveScore.textContent = '0';
+    document.getElementById('dsst-comparison').style.display = 'none';
+    // Reset countdown timer UI
+    var timerEl = document.getElementById('dsst-countdown-timer');
+    timerEl.classList.remove('brain-score__countdown-timer--active', 'brain-score__countdown-timer--complete');
+    timerEl.style.display = '';
+    document.getElementById('dsst-start-countdown').style.display = '';
+    document.getElementById('dsst-retest-now').style.display = 'none';
+    document.getElementById('dsst-timer-title').textContent = 'Ready to see Kenetik in action?';
+    document.getElementById('dsst-timer-subtitle').textContent = 'Drink a Kenetik, then retest in 30 minutes to compare your baseline.';
+    showScreen('dsst-intro');
+  });
+
+  // Countdown timer buttons
+  document.getElementById('dsst-start-countdown').addEventListener('click', startCountdownTimer);
+  document.getElementById('dsst-retest-now').addEventListener('click', startRetest);
   
   // Initialize
   buildKey();
