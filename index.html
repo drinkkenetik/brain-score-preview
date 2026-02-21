@@ -3,21 +3,316 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kenetik Brain Score - QA Preview</title>
+  <title>Brain Score | Kenetik</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 80px auto; padding: 0 24px; color: #333; }
-    h1 { font-size: 24px; margin-bottom: 8px; }
-    p { color: #666; margin-bottom: 32px; }
-    a { display: block; padding: 16px 24px; background: #333; color: white; text-decoration: none; border-radius: 6px; margin-bottom: 12px; font-weight: 600; }
-    a:hover { background: #555; }
-    .note { font-size: 13px; color: #999; margin-top: 32px; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #000000;
+      color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- Nav --- */
+    .nav {
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav__wordmark {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .nav__link {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      transition: color 0.2s ease;
+    }
+
+    .nav__link:hover {
+      color: #ffffff;
+    }
+
+    /* --- Hero --- */
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 32px 60px;
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero__eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #E84B63 0%, #F4B341 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 24px;
+    }
+
+    .hero__title {
+      font-size: 52px;
+      font-weight: 600;
+      line-height: 1.0;
+      letter-spacing: -1.6px;
+      margin-bottom: 24px;
+      color: #ffffff;
+    }
+
+    .hero__subtitle {
+      font-size: 17px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.55);
+      max-width: 480px;
+      margin-bottom: 56px;
+      letter-spacing: -0.2px;
+    }
+
+    /* --- Test Cards --- */
+    .tests {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+
+    .test-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 36px 28px 32px;
+      text-decoration: none;
+      color: #ffffff;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .test-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #E84B63, #F4B341);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .test-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .test-card:hover::before {
+      opacity: 1;
+    }
+
+    .test-card__icon {
+      font-size: 28px;
+      margin-bottom: 20px;
+      line-height: 1;
+    }
+
+    .test-card__name {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+      margin-bottom: 10px;
+    }
+
+    .test-card__desc {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.45);
+      margin-bottom: 24px;
+      flex: 1;
+      letter-spacing: -0.1px;
+    }
+
+    .test-card__cta {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.35);
+      transition: color 0.2s ease;
+      letter-spacing: 0.2px;
+    }
+
+    .test-card:hover .test-card__cta {
+      color: #F4B341;
+    }
+
+    .test-card__cta-arrow {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .test-card:hover .test-card__cta-arrow {
+      transform: translateX(3px);
+    }
+
+    /* --- Duration --- */
+    .duration {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.3);
+      margin-bottom: 48px;
+      letter-spacing: -0.1px;
+    }
+
+    /* --- Science Line --- */
+    .science {
+      max-width: 440px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .science__text {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: -0.1px;
+    }
+
+    .science__link {
+      color: rgba(255, 255, 255, 0.45);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.2s ease;
+    }
+
+    .science__link:hover {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* --- Footer --- */
+    .footer {
+      padding: 32px;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .footer__text {
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.2);
+      letter-spacing: 0.2px;
+    }
+
+    .footer__link {
+      color: rgba(255, 255, 255, 0.3);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer__link:hover {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 600px) {
+      .hero__title {
+        font-size: 36px;
+        letter-spacing: -1px;
+      }
+
+      .hero__subtitle {
+        font-size: 15px;
+      }
+
+      .tests {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .test-card {
+        padding: 28px 24px 24px;
+      }
+
+      .nav {
+        padding: 20px 20px;
+      }
+
+      .hero {
+        padding: 24px 20px 48px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Kenetik Brain Score</h1>
-  <p>QA preview builds. These are standalone versions for testing only.</p>
-  <a href="stroop.html">Stroop Test (Color/Word Interference)</a>
-  <a href="dsst.html">DSST (Digit Symbol Substitution)</a>
-  <p class="note">Internal use only. No data is sent to Klaviyo in these preview builds.</p>
+
+  <nav class="nav">
+    <a class="nav__wordmark" href="https://drinkkenetik.com">Kenetik</a>
+    <a class="nav__link" href="https://drinkkenetik.com/pages/science">The Science</a>
+  </nav>
+
+  <main class="hero">
+    <div class="hero__eyebrow">Brain Score</div>
+    <h1 class="hero__title">Measure your<br>cognitive baseline.</h1>
+    <p class="hero__subtitle">Two clinically validated tests that quantify your processing speed, attention control, and working memory. The same measures studied in ketone research.</p>
+
+    <div class="tests">
+      <a class="test-card" href="stroop.html">
+        <div class="test-card__icon">&#9673;</div>
+        <div class="test-card__name">Stroop Test</div>
+        <div class="test-card__desc">Measures attention control and cognitive interference. Identify ink colors while your brain fights the urge to read the word.</div>
+        <div class="test-card__cta">Start test <span class="test-card__cta-arrow">&rarr;</span></div>
+      </a>
+      <a class="test-card" href="dsst.html">
+        <div class="test-card__icon">&#9638;</div>
+        <div class="test-card__name">Digit Symbol</div>
+        <div class="test-card__desc">Measures processing speed and working memory under time pressure. Match digits to symbols as fast as you can in 90 seconds.</div>
+        <div class="test-card__cta">Start test <span class="test-card__cta-arrow">&rarr;</span></div>
+      </a>
+    </div>
+
+    <div class="duration">About 2 minutes each. No account needed.</div>
+
+    <div class="science">
+      <p class="science__text">Both tests are used in peer-reviewed cognitive research, including studies on exogenous ketones and brain performance. <a class="science__link" href="https://drinkkenetik.com/pages/science">Explore the research</a></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__text">&copy; 2026 <a class="footer__link" href="https://drinkkenetik.com">Kenetik</a>. Momentum For Life.</p>
+  </footer>
+
 </body>
 </html>
